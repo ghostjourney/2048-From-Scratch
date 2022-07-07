@@ -15,13 +15,16 @@ set(GLFW_BUILD_EXAMPLES OFF)
 set(GLFW_BUILD_TESTS OFF)
 set(GLFW_BUILD_DOCS OFF)
 
+add_library(library library/matrix.cpp library/matrix.hpp)
+
+target_include_directories(library PUBLIC library)
+
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     add_executable(2048SF linux/main.cpp)
 
     set_property(TARGET 2048SF PROPERTY CXX_STANDARD 20)
 
-    target_link_libraries(2048SF glfw)
-
+    target_link_libraries(2048SF glfw library)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -36,6 +39,5 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     set_property(TARGET 2048SF PROPERTY OBJCXX_STANDARD 20)
 
-    target_link_libraries(2048SF glfw)
-
+    target_link_libraries(2048SF glfw library)
 endif()

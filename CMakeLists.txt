@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(2048FromScratch LANGUAGES C CXX OBJC OBJCXX)
+project(2048FromScratch)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -11,28 +11,31 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(glfw3)
 
-add_executable(2048SF src/main.mm)
-
-set_property(TARGET 2048SF PROPERTY CXX_STANDARD 20)
-
-set_property(TARGET 2048SF PROPERTY OBJC_STANDARD 11)
-
-set_property(TARGET 2048SF PROPERTY OBJCXX_STANDARD 20)
-
-target_link_libraries(2048SF glfw)
-
-if(APPLE)
-    target_compile_options(2048SF PUBLIC "-fobjc-arc")
-    target_link_libraries(2048SF "-framework Metal" "-framework QuartzCore")
-    set_target_properties(2048SF PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Metal")
-endif()
-
 set(GLFW_BUILD_EXAMPLES OFF)
 set(GLFW_BUILD_TESTS OFF)
 set(GLFW_BUILD_DOCS OFF)
 
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    add_executable(2048SF linux/main.cpp)
 
+    set_property(TARGET 2048SF PROPERTY CXX_STANDARD 20)
 
+    target_link_libraries(2048SF glfw)
 
+endif()
 
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    add_executable(2048SF macos/main.mm)
+    target_compile_options(2048SF PUBLIC "-fobjc-arc")
+    target_link_libraries(2048SF "-framework Metal" "-framework QuartzCore")
+    set_target_properties(2048SF PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Metal")
 
+    set_property(TARGET 2048SF PROPERTY CXX_STANDARD 20)
+
+    set_property(TARGET 2048SF PROPERTY OBJC_STANDARD 11)
+
+    set_property(TARGET 2048SF PROPERTY OBJCXX_STANDARD 20)
+
+    target_link_libraries(2048SF glfw)
+
+endif()

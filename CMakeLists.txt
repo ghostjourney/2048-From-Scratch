@@ -19,12 +19,15 @@ add_library(library library/matrix.cpp library/matrix.hpp)
 
 target_include_directories(library PUBLIC library)
 
+add_library(game game/game.cpp)
+target_include_directories(game game/game.hpp)
+
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     add_executable(2048SF linux/main.cpp)
 
     set_property(TARGET 2048SF PROPERTY CXX_STANDARD 20)
 
-    target_link_libraries(2048SF glfw library)
+    target_link_libraries(2048SF glfw library game)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -39,5 +42,5 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     set_property(TARGET 2048SF PROPERTY OBJCXX_STANDARD 20)
 
-    target_link_libraries(2048SF glfw library)
+    target_link_libraries(2048SF glfw library game)
 endif()

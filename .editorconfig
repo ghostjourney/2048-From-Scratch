@@ -1,0 +1,37 @@
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+[*.cpp]
+charset = utf-8
+indent_style = space
+indent_size = 4
+
+[*.hpp]
+charset = utf-8
+indent_style = space
+indent_size = 4
+
+[*.h]
+charset = utf-8
+indent_style = space
+indent_size = 4
+
+[*.m]
+charset = utf-8
+indent_style = space
+indent_size = 4
+
+[*.mm]
+charset = utf-8
+indent_style = space
+indent_size = 4
+
+[CMakeLists.txt]
+charset = utf-8
+indent_style = space
+indent_size = 4
+
+

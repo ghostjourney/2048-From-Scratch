@@ -49,7 +49,7 @@ The Currrent Architecture has a weird flow.
 Each platform targets has code specific for their platforms and are entry points. The generated executables are for each platform. The platforms provide platform logic for the game object and for the underlying libraries. The platforms provide glue code and execution flow.
 
 ```mermaid
-    sequenceDiagram:
+    sequenceDiagram
         Platform->>Game: Hands control to game ( or setups events to be managed by game )
         Game->>Library: calls library for general algorithms
         Game->>Platform: calls platform for platform code

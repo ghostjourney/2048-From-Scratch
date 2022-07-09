@@ -63,7 +63,7 @@ namespace Game2048 {
          *
          * \returns pointer to logger. Does not transfer ownership
          */
-        Logger* GetLogger()
+        Logger* GetLogger();
         
         private:
         /// platform specific window

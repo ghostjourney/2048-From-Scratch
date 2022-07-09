@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.23)
 
 project(2048FromScratch)
 
-add_library(library library/matrix.cpp library/matrix.hpp library/logger.hpp library/console_logger.hpp library/window.hpp library/window.cpp)
+add_library(gfs gfs/matrix.cpp gfs/matrix.hpp gfs/logger.hpp gfs/console_logger.hpp gfs/window.hpp gfs/window.cpp)
 
-set_property(TARGET library PROPERTY CXX_STANDARD 20)
+set_property(TARGET gfs PROPERTY CXX_STANDARD 20)
 
-target_include_directories(library PUBLIC library)
+target_include_directories(gfs PUBLIC gfs)
 
 
 add_library(game game/game.cpp game/game.hpp)
@@ -14,14 +14,14 @@ set_property(TARGET game PROPERTY CXX_STANDARD 20)
 
 target_include_directories(game PUBLIC game)
 
-target_link_libraries(game library)
+target_link_libraries(game gfs)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     add_executable(2048SF linux/main.cpp)
 
     set_property(TARGET 2048SF PROPERTY CXX_STANDARD 20)
 
-    target_link_libraries(2048SF library game)
+    target_link_libraries(2048SF gfs game)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -35,7 +35,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     set_property(TARGET 2048SF PROPERTY OBJCXX_STANDARD 20)
 
-    target_link_libraries(2048SF library game)
+    target_link_libraries(2048SF gfs game)
 
     set(RESOURCE_FILES "macos/Base.lproj/MainMenu.xib")
 

@@ -2,6 +2,8 @@
 
 #include <string>
 
+namespace gfs {
+
 class Shader;
 
 /**
@@ -25,3 +27,4 @@ class ShaderLibrary {
     private:
 
 };
+}

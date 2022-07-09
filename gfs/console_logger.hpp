@@ -2,6 +2,8 @@
 
 #include "logger.hpp"
 
+namespace gfs {
+
 class ConsoleLogger : public Logger {
     public:
     void Log(Logger::Level level, std::string message) override {
@@ -16,3 +18,4 @@ class ConsoleLogger : public Logger {
         Log(Logger::Level::ERROR, message);
     }
 };
+}

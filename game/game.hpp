@@ -34,14 +34,14 @@ namespace Game2048 {
          *
          * \param window platform specific version of window
          */
-        void SetWindow(std::unique_ptr<Window> window);
+        void SetWindow(std::unique_ptr<gfs::Window> window);
        
         /**
          * retrieves the associated window
          *
          * \returns pointer to window. Does not transfer ownership
          */
-        Window* GetWindow(void);
+        gfs::Window* GetWindow(void);
        
         /**
          * called to immediately terminate the game
@@ -63,13 +63,13 @@ namespace Game2048 {
          *
          * \returns pointer to logger. Does not transfer ownership
          */
-        Logger* GetLogger();
+        gfs::Logger* GetLogger();
         
         private:
         /// platform specific window
-        std::unique_ptr<Window> mWindow;
+        std::unique_ptr<gfs::Window> mWindow;
 
         /// general logger
-        std::unique_ptr<Logger> mLogger;
+        std::unique_ptr<gfs::Logger> mLogger;
     };
 };

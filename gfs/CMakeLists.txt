@@ -3,9 +3,11 @@ add_library(gfs
     include/gfs/logger.hpp
     include/gfs/console_logger.hpp
     include/gfs/window.hpp
+    include/gfs/buffer.hpp
 
     src/matrix.cpp
     src/window.cpp
+    src/buffer.cpp
 )
 
 set_property(TARGET gfs PROPERTY CXX_STANDARD 20)

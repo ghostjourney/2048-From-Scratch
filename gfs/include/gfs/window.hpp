@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "gfs/buffer.hpp"
+
 namespace gfs {
 
 class Window {
@@ -10,7 +12,9 @@ class Window {
     virtual void SetTitle(std::string title);
     
     virtual void SetHeightWidth(double height, double width) { mWidth = width; mHeight = height; }
-    
+
+    virtual void Draw(gfs::Buffer<float, 2>& vertices)=0;
+
     private:
     std::string mTitle;
     double mWidth;

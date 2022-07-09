@@ -6,14 +6,16 @@
 
 @class AppDelegate;
 
-
 class MacWindow : public gfs::Window {
     public:
     
     bool Init(void) override;
+
     void SetTitle(std::string title) override;
-    
+
     void SetHeightWidth(double height, double width) override;
+
+    void Draw(gfs::Buffer<float, 2>& vertices) override;
    
     // MacWindow specific code
     

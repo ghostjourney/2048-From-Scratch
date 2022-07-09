@@ -5,6 +5,8 @@
 #include "gfs/window.hpp"
 #include "gfs/logger.hpp"
 
+#include "game2048/tile.hpp"
+
 namespace Game2048 {
 
     /**
@@ -56,7 +58,7 @@ namespace Game2048 {
         /**
          * draw game frame
          */
-        void Draw(void);
+        std::unique_ptr<gfs::Buffer<float, 2>> Draw(void);
 
         /**
          * Get program wide logger
@@ -71,5 +73,7 @@ namespace Game2048 {
 
         /// general logger
         std::unique_ptr<gfs::Logger> mLogger;
+
+        std::unique_ptr<Tile> mTile;
     };
 };

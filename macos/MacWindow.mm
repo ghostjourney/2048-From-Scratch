@@ -26,3 +26,7 @@ void MacWindow::SetTitle(std::string title) {
     Window::SetTitle(title);
     [mAppDelegate window].title = [[NSString alloc] initWithUTF8String:title.c_str()];
 }
+
+void MacWindow::Draw(gfs::Buffer<float, 2>& vertices) {
+    
+}

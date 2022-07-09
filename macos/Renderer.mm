@@ -38,10 +38,10 @@
             @"#include <metal_stdlib>\n"
             "using namespace metal;\n"
             "vertex float4 v_simple(\n"
-            "    constant float4* in  [[buffer(0)]],\n"
+            "    constant float2* in  [[buffer(0)]],\n"
             "    uint             vid [[vertex_id]])\n"
             "{\n"
-            "    return in[vid];\n"
+            "    return float4(in[vid][0], in[vid][1], 0.0, 1.0);\n"
             "}\n"
             "fragment float4 f_simple(\n"
             "    float4 in [[stage_in]])\n"
@@ -101,13 +101,16 @@
     
     
     [commandEncoder setRenderPipelineState:_renderPipelineState];
-    [commandEncoder setVertexBytes:(vector_float4[]){
-        { 0, 0, 0, 1},
-        {-1, 1, 0, 1},
-        { 1, 1, 0, 1}
-    } length:3 * sizeof(vector_float4) atIndex: 0];
-    
-    [commandEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:3];
+
+    auto vertices = _game->Draw();
+
+    if(vertices->GetSize() != 0) {
+        [commandEncoder setVertexBytes: vertices->GetData() length: vertices->GetDataSize()*vertices->GetSize()*vertices->GetWidth() atIndex: 0];
+    }
+
+    if(vertices->GetSize() != 0) {
+        [commandEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:vertices->GetSize()];
+    }
 
     [commandEncoder endEncoding];
 

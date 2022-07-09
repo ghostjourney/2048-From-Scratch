@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 
+namespace gfs {
+
 class Logger {
     public:
     enum class Level {
@@ -37,4 +39,4 @@ class Logger {
         }
     }
 };
-
+}

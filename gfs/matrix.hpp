@@ -8,6 +8,8 @@
 #include <initializer_list>
 #include <cmath>
 
+namespace gfs {
+
 template<typename T, int C>
 class RVector {
     public:
@@ -221,4 +223,4 @@ inline Matrix<T, 4, 4> ProjectionMatrix(const T left, const T right, const T bot
     };
     return out;
 }
-
+}

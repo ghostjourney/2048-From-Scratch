@@ -4,16 +4,16 @@
 
 #include "console_logger.hpp"
 
-Game2048::Game2048::Game2048() : mLogger{std::make_unique<ConsoleLogger>()}{
+Game2048::Game2048::Game2048() : mLogger{std::make_unique<gfs::ConsoleLogger>()}{
 };
 
 Game2048::Game2048::~Game2048() {}
 
-void Game2048::Game2048::SetWindow(std::unique_ptr<Window> window) {
+void Game2048::Game2048::SetWindow(std::unique_ptr<gfs::Window> window) {
     mWindow = std::move(window);
 }
 
-Window* Game2048::Game2048::GetWindow(void) {
+gfs::Window* Game2048::Game2048::GetWindow(void) {
     return mWindow.get();
 }
 

@@ -7,7 +7,7 @@
 @class AppDelegate;
 
 
-class MacWindow : public Window {
+class MacWindow : public gfs::Window {
     public:
     
     bool Init(void) override;

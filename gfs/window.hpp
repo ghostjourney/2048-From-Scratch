@@ -2,6 +2,8 @@
 
 #include <string>
 
+namespace gfs {
+
 class Window {
     public:
     virtual bool Init(void)=0;
@@ -13,4 +15,5 @@ class Window {
     std::string mTitle;
     double mWidth;
     double mHeight;
+};
 };

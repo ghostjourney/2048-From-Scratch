@@ -24,8 +24,9 @@
     auto window = std::make_unique<MacWindow>();
     window->SetAppDelegate(self);
     _game->SetWindow(std::move(window));
-    _window.contentViewController = [[MyViewController alloc] init];
-    
+    _window.contentViewController = [[MyViewController alloc] initWithGame: _game.get() WithWindow:(MacWindow*) _game->GetWindow()];
+   
+    // game initilization should be the last item
     _game->Init();
 }
 

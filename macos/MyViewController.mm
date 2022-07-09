@@ -9,12 +9,14 @@
     Renderer* _renderer;
     
     Game2048::Game2048* _game;
+    MacWindow* _macWindow;
 }
 
-- (instancetype) initWithGame:(Game2048::Game2048 *_Nullable)game {
+- (instancetype) initWithGame:(Game2048::Game2048 *_Nullable)game WithWindow:(MacWindow *) macWindow{
    
     self = [super initWithNibName:nil bundle:nil];
     _game = game;
+    _macWindow = macWindow;
     
     return self;
 }
@@ -32,7 +34,7 @@
     _view.device = MTLCreateSystemDefaultDevice();
     
 
-    _renderer = [[Renderer alloc] initWithMetalKitView:_view WithGame:_game];
+    _renderer = [[Renderer alloc] initWithMetalKitView:_view WithGame:_game WithWindow: _macWindow];
     
 
     if(!_renderer)

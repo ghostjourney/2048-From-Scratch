@@ -1,5 +1,9 @@
 #import "Renderer.h"
 
+#include "game.hpp"
+
+#include "MacWindow.h"
+
 @implementation Renderer
 {
     id<MTLDevice> _device;
@@ -14,13 +18,12 @@
     Game2048::Game2048* _game;
 }
 
-- (nonnull instancetype) initWithMetalKitView:(nonnull MTKView *) mtkView WithGame:(Game2048::Game2048 *)game
+- (nonnull instancetype) initWithMetalKitView:(nonnull MTKView *) mtkView WithGame:(Game2048::Game2048 *)game WithWindow:(MacWindow*) macWindow
 {
     self = [super init];
     
     _game = game;
     
-
     if(self)
     {
         _device = mtkView.device;

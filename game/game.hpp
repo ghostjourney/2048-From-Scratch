@@ -14,6 +14,8 @@ namespace Game2048 {
         void Init(void);
 
         void SetWindow(std::unique_ptr<Window> window);
+
+        Window* GetWindow(void);
         
         
         void Terminate();
@@ -28,6 +30,5 @@ namespace Game2048 {
         private:
         std::unique_ptr<Window> mWindow;
         std::unique_ptr<Logger> mLogger;
-        
     };
 };

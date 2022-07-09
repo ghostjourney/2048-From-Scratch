@@ -13,6 +13,10 @@ void Game2048::Game2048::SetWindow(std::unique_ptr<Window> window) {
     mWindow = std::move(window);
 }
 
+Window* Game2048::Game2048::GetWindow(void) {
+    return mWindow.get();
+}
+
 void Game2048::Game2048::Init(void) {
     mWindow->SetTitle("Hello World");
 }

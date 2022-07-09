@@ -1,6 +1,16 @@
 #include "MacWindow.h"
 
+#include <Appkit/AppKit.h>
+#include "AppDelegate.h"
+#include "Renderer.h"
+
+void MacWindow::SetRenderer(Renderer* renderer) {
+    mRenderer = renderer;
+}
+
+
 bool MacWindow::MacWindow::Init(void) {
+    return true;
 }
 
 void MacWindow::SetAppDelegate(AppDelegate *delegate) {

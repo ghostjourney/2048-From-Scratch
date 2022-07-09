@@ -33,7 +33,7 @@ cmake -G Xcode -B xcode
 
 The above command will generate an xcode project located in xcode. Open the project with xcode and compile it.
 
-### Build MacOS
+### Build Linux
 
 Requires X11 & GL standard header files on linux. 
 In the base directory
@@ -47,7 +47,7 @@ run
 ```sh
 make
 ```
-binary will be compiled and you may run ``/.2048FS``
+binary will be compiled and you may run ``./2048FS``
 
 ## Developer Notes
 

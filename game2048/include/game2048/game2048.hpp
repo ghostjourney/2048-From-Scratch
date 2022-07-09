@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "window.hpp"
-#include "logger.hpp"
+#include "gfs/window.hpp"
+#include "gfs/logger.hpp"
 
 namespace Game2048 {
 

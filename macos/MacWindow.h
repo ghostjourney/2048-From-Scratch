@@ -1,6 +1,6 @@
 #pragma once
 
-#include "window.hpp"
+#include "gfs/window.hpp"
 
 @class Renderer;
 

@@ -1,4 +1,4 @@
-#include "window.hpp"
+#include "gfs/window.hpp"
 
 
 void gfs::Window::SetTitle(std::string title) {

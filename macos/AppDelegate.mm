@@ -9,7 +9,7 @@
 
 #include "MacWindow.h"
 
-#include "game.hpp"
+#include "game2048/game2048.hpp"
 
 
 

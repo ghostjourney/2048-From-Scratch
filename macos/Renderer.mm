@@ -1,6 +1,6 @@
 #import "Renderer.h"
 
-#include "game.hpp"
+#include "game2048/game2048.hpp"
 
 #include "MacWindow.h"
 

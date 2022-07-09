@@ -1,8 +1,8 @@
-#include "game.hpp"
+#include "game2048/game2048.hpp"
 
 #include <memory>
 
-#include "console_logger.hpp"
+#include "gfs/console_logger.hpp"
 
 Game2048::Game2048::Game2048() : mLogger{std::make_unique<gfs::ConsoleLogger>()}{
 };

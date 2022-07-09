@@ -12,6 +12,13 @@ The project is split between platform specific code, shared library code, and ga
 
 The platform specific code is located in directories containing the associated platform (E.g. linux specific code is in the linux directory)
 
+All game logic is located in game code.
+
+Platform specific code is located in their respective directories
+
+Shared logic code and game logic code are currently cross platform
+
+
 ## Build Instructions
 
 The project is currently configured to auto detect the operation system and use the appropriate target for the operating system.
@@ -34,3 +41,14 @@ to create it.
 ```sh
 cmake -Bbuild -DCMAKE_EXPORT_COMPILE_COMMANDS=1
 ```
+
+## Architecture
+
+The Currrent Architecture has a weird flow.
+
+Each platform targets has code specific for their platforms and are entry points. The generated executables are for each platform. The platforms provide platform logic for the game object and for the underlying libraries. The platforms provide glue code and execution flow.
+
+Platform -> Game -> Library
+    <--------
+    <------------------
+

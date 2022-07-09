@@ -32,10 +32,8 @@
     _view = (MTKView *) self.view;
     
     _view.device = MTLCreateSystemDefaultDevice();
-    
 
     _renderer = [[Renderer alloc] initWithMetalKitView:_view WithGame:_game WithWindow: _macWindow];
-    
 
     if(!_renderer)
     {

@@ -9,10 +9,18 @@
 
 class MacWindow : public Window {
     public:
-    void SetAppDelegate(AppDelegate *delegate);
-    void SetRenderer(Renderer *renderer);
+    
     bool Init(void) override;
     void SetTitle(std::string title) override;
+    
+    void SetHeightWidth(double height, double width) override;
+   
+    // MacWindow specific code
+    
+    void SetAppDelegate(AppDelegate *delegate);
+    
+    void SetRenderer(Renderer *renderer);
+   
     private:
 
     /// provided. Not owned

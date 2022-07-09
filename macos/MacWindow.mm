@@ -8,6 +8,11 @@ void MacWindow::SetRenderer(Renderer* renderer) {
     mRenderer = renderer;
 }
 
+void MacWindow::SetHeightWidth(double height, double width) {
+    Window::SetHeightWidth(height, width);
+    
+    [[mAppDelegate window] setContentSize:NSMakeSize(width, height)];
+}
 
 bool MacWindow::MacWindow::Init(void) {
     return true;

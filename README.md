@@ -33,6 +33,22 @@ cmake -G Xcode -B xcode
 
 The above command will generate an xcode project located in xcode. Open the project with xcode and compile it.
 
+### Build MacOS
+
+Requires X11 & GL standard header files on linux. 
+In the base directory
+```sh
+cmake -B build
+```
+
+then cd into ``builds/``
+
+run
+```sh
+make
+```
+binary will be compiled and you may run ``/.2048FS``
+
 ## Developer Notes
 
 The symlink for compile_commands.json is for a cmake generated file located in the generated build directory. Use the following command

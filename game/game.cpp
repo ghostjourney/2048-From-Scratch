@@ -17,8 +17,13 @@ Window* Game2048::Game2048::GetWindow(void) {
     return mWindow.get();
 }
 
+void Game2048::Game2048::Draw(void) {
+    
+}
+
 void Game2048::Game2048::Init(void) {
     mWindow->SetTitle("Hello World");
+    mWindow->SetHeightWidth(1280.0, 720.0);
 }
 
 void Game2048::Game2048::Terminate() {

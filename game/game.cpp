@@ -1,4 +1,26 @@
 #include "game.hpp"
-Game2048::Game2048::Game2048() {
+
+#include <memory>
+
+#include "console_logger.hpp"
+
+Game2048::Game2048::Game2048() : mLogger{std::make_unique<ConsoleLogger>()}{
 };
 
+Game2048::Game2048::~Game2048() {}
+
+void Game2048::Game2048::SetWindow(std::unique_ptr<Window> window) {
+    mWindow = std::move(window);
+}
+
+void Game2048::Game2048::Init(void) {
+    mWindow->SetTitle("Hello World");
+}
+
+void Game2048::Game2048::Terminate() {
+    
+}
+
+void Game2048::Game2048::SaveState() {
+    
+}

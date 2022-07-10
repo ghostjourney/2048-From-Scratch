@@ -40,7 +40,35 @@ class Window {
      */
     virtual void SetHeightWidth(double height, double width) { mWidth = width; mHeight = height; }
 
+    /**
+     * Drawa vertices to screen
+     * \param vertices vertices to draw
+     */
     virtual void Draw(gfs::Buffer<float, 2>& vertices)=0;
+
+    /**
+     * Gets the cached width
+     * \returns cahched width
+     */
+    inline virtual double GetWidth(void) const noexcept {
+        return mWidth;
+    }
+
+    /**
+     * Gets the cached height
+     * \returns cahched height
+     */
+    inline virtual double GetHeight(void) const noexcept {
+        return mWidth;
+    }
+
+    /**
+     * Gets the cached title
+     * \returns cahched title
+     */
+    inline virtual const std::string& GetTitle(void) const noexcept {
+        return mTitle;
+    }
 
     private:
 

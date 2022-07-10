@@ -30,8 +30,21 @@ int main(int argc, char* argv[]){
     SDL_Surface *win_surface = SDL_GetWindowSurface(win.getWinPtr());
     SDL_FillRect(&*win_surface, nullptr, SDL_MapRGB(win_surface->format, 0xFF, 0xFF, 0xFF));
     SDL_UpdateWindowSurface(win.getWinPtr());
-    SDL_Delay(3000);
+    //SDL_Delay(3000);
     
+    bool quit = false;
+    SDL_Event e;
+
+    while (!quit) {
+        // events go here
+        SDL_UpdateWindowSurface(win.getWinPtr());
+        while (SDL_PollEvent(&e ) != 0) {
+            if (e.type == SDL_QUIT) {
+                quit = true;
+            }
+        }
+    }
+
 
 
     SDL_DestroyWindow(win.getWinPtr());

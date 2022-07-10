@@ -38,8 +38,8 @@
             @"#include <metal_stdlib>\n"
             "using namespace metal;\n"
             "vertex float4 v_simple(\n"
-            "    constant float2* in  [[buffer(0)]],\n"
-            "    uint             vid [[vertex_id]])\n"
+            "    constant float2*    in     [[buffer(0)]],\n"
+            "    uint                vid    [[vertex_id]])\n"
             "{\n"
             "    return float4(in[vid][0], in[vid][1], 0.0, 1.0);\n"
             "}\n"
@@ -98,17 +98,18 @@
     
     [commandEncoder setViewport:(MTLViewport){0.0, 0.0, view.frame.size.width, view.frame.size.height, 0.0, 1.0}];
     
-    
+    auto matrix = gfs::CreateIdentity<float, 4>(1.0f);
     
     [commandEncoder setRenderPipelineState:_renderPipelineState];
 
     auto vertices = _game->Draw();
 
-    if(vertices->GetSize() != 0) {
-        [commandEncoder setVertexBytes: vertices->GetData() length: vertices->GetDataSize()*vertices->GetSize()*vertices->GetWidth() atIndex: 0];
-    }
 
     if(vertices->GetSize() != 0) {
+        [commandEncoder setVertexBytes: vertices->GetData() length: vertices->GetDataSize()*vertices->GetSize()*vertices->GetWidth() atIndex: 0];
+
+        //[commandEncoder setVertexBytes: matrix.GetData() length: matrix.GetColumns() * matrix.GetRows() * sizeof(float) atIndex: 1];
+
         [commandEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:vertices->GetSize()];
     }
 

@@ -78,6 +78,10 @@ class Matrix {
             mMatrix = std::move(m.mMatrix);
         }
 
+        T* GetData() noexcept {
+            return mMatrix.data();
+        }
+
         Matrix& operator=(const Matrix& m) {
             std::copy(m.mMatrix.get()[0], m.mMatrix.get()[R*C], mMatrix.get()[0]);
             return *this;

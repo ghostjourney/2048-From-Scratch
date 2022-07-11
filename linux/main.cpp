@@ -17,6 +17,11 @@
 //#include "gfs/window.hpp"
 //#include "src/Xwindow.hpp"
 
+/*
+    TODO
+        resolve : 
+            conflicting declaration ‘typedef void (* PFNGLFRAGMENTLIGHTFVSGIXPROC)(GLenum, GLenum, const GLfloat*)’
+*/
 
 const int SCREEN_WIDTH  = 800;
 const int SCREEN_HEIGHT = 600;

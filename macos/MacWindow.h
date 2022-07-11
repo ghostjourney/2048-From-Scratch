@@ -15,7 +15,7 @@ class MacWindow : public gfs::Window {
 
     void SetHeightWidth(double height, double width) override;
 
-    void Draw(gfs::Buffer<float, 2>& vertices) override;
+    void Draw(gfs::Buffer<float, 8>& vertices) override;
    
     // MacWindow specific code
     

@@ -4,6 +4,8 @@ add_library(gfs
     include/gfs/console_logger.hpp
     include/gfs/window.hpp
     include/gfs/buffer.hpp
+    include/gfs/graphics.hpp
+    include/gfs/vertex.hpp
 
     src/matrix.cpp
     src/window.cpp
@@ -13,3 +15,9 @@ add_library(gfs
 set_property(TARGET gfs PROPERTY CXX_STANDARD 20)
 
 target_include_directories(gfs PUBLIC include)
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+
+target_link_libraries(gfs "-framework Accelerate")
+
+endif()

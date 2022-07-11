@@ -27,8 +27,8 @@ void Game2048::Game2048::Init(void) {
 }
 
 
-std::unique_ptr<gfs::Buffer<float, 2>> Game2048::Game2048::Draw(void) {
-    auto buffer = std::make_unique<gfs::Buffer<float, 2>>();
+std::unique_ptr<std::vector<gfs::Vertex2D>> Game2048::Game2048::Draw(void) {
+    auto buffer = std::make_unique<std::vector<gfs::Vertex2D>>();
     mTile->Draw(*buffer.get());
     return std::move(buffer);
 }

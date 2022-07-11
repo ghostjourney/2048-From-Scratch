@@ -11,9 +11,6 @@
 
 #include "game2048/game2048.hpp"
 
-
-
-
 @implementation AppDelegate {
     std::unique_ptr<Game2048::Game2048> _game;
 }

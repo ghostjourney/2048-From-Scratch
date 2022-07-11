@@ -4,12 +4,16 @@
 
 #include "gfs/buffer.hpp"
 
+#include <vector>
+
+#include "gfs/vertex.hpp"
+
 namespace Game2048 {
 
 class Tile {
     public:
     Tile(const gfs::RVector<float, 2> pos, const gfs::RVector<float, 2> dimensions);
-    void Draw(gfs::Buffer<float, 2>& vertices);
+    void Draw(std::vector<gfs::Vertex2D>& vertices);
 
     private:
     /// dimensions: x, y

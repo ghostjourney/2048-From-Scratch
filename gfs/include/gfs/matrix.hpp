@@ -9,7 +9,6 @@
 #include <cmath>
 
 namespace gfs {
-
 template<typename T, int C>
 class RVector {
     public:
@@ -21,7 +20,9 @@ class RVector {
 
         RVector(void) {}
         ~RVector(void) {}
-        RVector(std::initializer_list<T> l) : mRVector{l} {}
+        RVector(std::initializer_list<T> l) {
+            std::copy(l.begin(), l.end(), mRVector.begin());
+        }
 
         RVector(RVector& rv) {
             std::copy(rv.mRVector.begin(), rv.mRVector.end(), mRVector.begin());
@@ -42,6 +43,30 @@ class RVector {
 
         T& operator[](int i) {
             return mRVector[i];
+        }
+
+        inline T GetX(void) const noexcept {
+            return mRVector[0];
+        }
+
+        inline T GetY(void) const noexcept {
+            return mRVector[1];
+        }
+
+        auto begin() {
+            return mRVector.begin();
+        }
+
+        auto cend() const {
+            return mRVector.cend();
+        }
+    
+        auto cbegin() const {
+            return mRVector.cbegin();
+        }
+
+        auto end () {
+            return mRVector.end();
         }
 
     private:

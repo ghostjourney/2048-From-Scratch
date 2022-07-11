@@ -4,6 +4,7 @@
 
 #include "gfs/window.hpp"
 #include "gfs/logger.hpp"
+#include "gfs/vertex.hpp"
 
 #include "game2048/tile.hpp"
 
@@ -58,7 +59,7 @@ namespace Game2048 {
         /**
          * draw game frame
          */
-        std::unique_ptr<gfs::Buffer<float, 2>> Draw(void);
+        std::unique_ptr<std::vector<gfs::Vertex2D>> Draw(void);
 
         /**
          * Get program wide logger

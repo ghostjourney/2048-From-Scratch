@@ -44,7 +44,7 @@ class Window {
      * Drawa vertices to screen
      * \param vertices vertices to draw
      */
-    virtual void Draw(gfs::Buffer<float, 2>& vertices)=0;
+    virtual void Draw(gfs::Buffer<float, 8>& vertices)=0;
 
     /**
      * Gets the cached width

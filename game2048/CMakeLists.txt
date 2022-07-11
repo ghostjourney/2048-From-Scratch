@@ -11,3 +11,9 @@ set_property(TARGET game2048 PROPERTY CXX_STANDARD 20)
 target_include_directories(game2048 PUBLIC include)
 
 target_link_libraries(game2048 gfs)
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+
+target_link_libraries(game2048 "-framework Accelerate")
+
+endif()

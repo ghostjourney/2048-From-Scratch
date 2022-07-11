@@ -37,16 +37,29 @@
         _library = [_device newLibraryWithSource:
             @"#include <metal_stdlib>\n"
             "using namespace metal;\n"
-            "vertex float4 v_simple(\n"
-            "    constant float2*    in     [[buffer(0)]],\n"
+            "struct VertexBuffer {\n"
+            "   float2 position;\n"
+            "   float4 color;\n"
+            "   float2 tex;\n"
+            "};\n"
+            "struct v2f {\n"
+            "   float4 position [[position]];\n"
+            "   float4 color;\n"
+            "};\n"
+
+            "v2f vertex v_simple(\n"
+            "    device const VertexBuffer* in     [[buffer(0)]],\n"
             "    uint                vid    [[vertex_id]])\n"
             "{\n"
-            "    return float4(in[vid][0], in[vid][1], 0.0, 1.0);\n"
+            "    v2f o;\n"
+            "    o.position = float4(in[vid].position.xy, 0.0, 1.0);\n"
+            "    o.color = in[vid].color.xyzw;\n"
+            "    return o;\n"
             "}\n"
             "fragment float4 f_simple(\n"
-            "    float4 in [[stage_in]])\n"
+            "   v2f in [[stage_in]])\n"
             "{\n"
-            "    return float4(1, 0, 0, 1);\n"
+            "    return in.color.xyzw;\n"
             "}\n"
             options:compileOptions error:&compileError];
 
@@ -59,6 +72,13 @@
     }
     return self;
 }
+
+#include <simd/simd.h>
+
+struct Test {
+    simd_float2 pos;
+    simd_float4 color;
+};
 
 - (void)drawInMTKView:(nonnull MTKView *)view;
 {
@@ -92,7 +112,7 @@
     pipelineDescriptor.colorAttachments[0].pixelFormat = view.colorPixelFormat;
     _renderPipelineState = [_device newRenderPipelineStateWithDescriptor: pipelineDescriptor error:&pipelineError];
     
-    if(pipelineError == nil) {
+    if(pipelineError != nil) {
         NSLog(@"Pipeline Error");
     }
     
@@ -104,13 +124,12 @@
 
     auto vertices = _game->Draw();
 
-
-    if(vertices->GetSize() != 0) {
-        [commandEncoder setVertexBytes: vertices->GetData() length: vertices->GetDataSize()*vertices->GetSize()*vertices->GetWidth() atIndex: 0];
+    if(vertices->size() != 0) {
+        [commandEncoder setVertexBytes: vertices->data() length:vertices->size()*sizeof(gfs::Vertex2D) atIndex: 0];
 
         //[commandEncoder setVertexBytes: matrix.GetData() length: matrix.GetColumns() * matrix.GetRows() * sizeof(float) atIndex: 1];
 
-        [commandEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:vertices->GetSize()];
+        [commandEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:vertices->size()];
     }
 
     [commandEncoder endEncoding];

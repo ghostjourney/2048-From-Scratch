@@ -108,8 +108,6 @@ Each platform targets has code specific for their platforms and are entry points
 	- Tile renders itself, its contents ( mainly the number ) and will handle click detection
 	- Draw() 
 		- Renders itself using Library
-```
-
 ```mermaid
 classDiagram
 Game2048 *-- Tile : 16 tiles to 1 game2048

@@ -13,12 +13,21 @@ add_subdirectory(gfs)
 add_subdirectory(game2048)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    add_executable(2048SF linux/main.cpp)
+    
+    add_executable(2048SF 
+        linux/main.cpp 
+        linux/src/sdl_win.hpp 
+        linux/src/sdl_wrap.hpp
+        linux/src/sdl_gl.hpp
+        )
 
-    add_compile_options(-Wall )
+    find_package(SDL2 REQUIRED)
+    add_compile_options(-Wall -g  )
     set_property(TARGET 2048SF PROPERTY CXX_STANDARD 20)
+    
+    target_link_libraries(2048SF gfs game2048 GL ${SDL2_LIBRARIES} )
+    include_directories(${SDL2_INCLUDE_DIRS})
 
-    target_link_libraries(2048SF gfs game2048 GL X11)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")

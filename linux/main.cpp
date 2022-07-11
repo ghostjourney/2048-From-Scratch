@@ -7,11 +7,13 @@
 #include <unistd.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
-#include <GL/gl.h>
-#include <GL/glx.h>
 #include <SDL2/SDL.h>
 #include "src/sdl_win.hpp"
 #include "src/sdl_wrap.hpp"
+#include "src/sdl_gl.hpp"
+#include <GL/gl.h>
+#include <GL/glx.h>
+
 //#include "gfs/window.hpp"
 //#include "src/Xwindow.hpp"
 
@@ -32,12 +34,18 @@ int main(int argc, char* argv[]){
     SDL_UpdateWindowSurface(win.getWinPtr());
     //SDL_Delay(3000);
     
+    if (!isGLCtx(win.getWinPtr())) {
+        return EXIT_FAILURE;
+    } 
+
+
     bool quit = false;
     SDL_Event e;
 
     while (!quit) {
         // events go here
         SDL_UpdateWindowSurface(win.getWinPtr());
+        //
         while (SDL_PollEvent(&e ) != 0) {
             if (e.type == SDL_QUIT) {
                 quit = true;

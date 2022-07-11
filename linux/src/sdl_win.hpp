@@ -5,9 +5,7 @@
 #include <cstdint>
 #include <string>
 
-
 class _Window : public gfs::Window {
-
     private:
         SDL_Window* _win = nullptr;
 
@@ -47,5 +45,5 @@ class _Window : public gfs::Window {
             Init();
         }
 
-        
+      
 };

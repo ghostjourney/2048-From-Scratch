@@ -71,3 +71,78 @@ Each platform targets has code specific for their platforms and are entry points
         Game->>Platform: calls platform for platform code
         Library->>Platform: calls platform for platform code
 ```
+### Library Classes
+
+#### Notes:
+-
+
+### classes
+#### Graphic classes
+- There will be classes to draw basic objects ( rectangles, circles, etc.)
+
+### Game Classes
+#### Notes:
+- Game classes model objects in the game and the game itself ( basic business logic )
+
+#### classes
+- Game2048 (main object)
+	- Its the program object.
+	- In a program, there will be only one instance of the class
+	- All game state will be managed by Game2048 ( platform specific not withstanding)
+		- platform specific code lifetimes are to the entire program which is equivalent to Game2048
+	- Init()
+		- All dependencies ( such as window ) must be injected into this object before init()
+	- Draw() 
+		- will render a new frame
+	- Click(double x, double y)
+		- Click or Touch event will trigger a call to this function
+	- KeyBoardInput(keyCode)
+	- SaveState()
+		- Saves the current state to static storage
+		- JSON or XML format
+	- Terminate() 
+		- Terminates the game
+	- Contains Tiles
+- Tile
+	- Tile is a tile in 2048 
+	- Tile renders itself, its contents ( mainly the number ) and will handle click detection
+	- Draw() 
+		- Renders itself using Library
+```
+
+```mermaid
+classDiagram
+Game2048 *-- Tile : 16 tiles to 1 game2048
+Game2048 *-- Window : 1 to 1
+Game2048 : Draw()
+Game2048 : Init()
+Game2048 : Click(double x, double y)
+Game2048 : bool Hit(double x, double y)
+Game2048 : KeyBoardInput(int keyCode)
+Game2048 : SaveState()
+Game2048 : Terminate()
+Game2048 : int currentScore
+Game2048 : int highScore
+Tile : Draw(VerticesBuffer* buffer)
+Tile : Click(double x, double y)
+Window <|-- MacWindow
+Window : SetTitle(string title)
+Window : SetHeightWidth(double height, double width)
+Window : double GetHeight()
+Window : double GetWidth()
+Window : string GetTitle()
+Window : string title
+Window : double height
+Window : double width
+Window  *-- Renderer
+Window <|-- LinuxWindow
+Renderer <|-- MacRenderer
+Renderer : void Draw(Vertices* v)
+Buffer
+Logger <|-- ConsoleLogger
+DrawRectangle
+Matrix
+RVector
+Shader
+ShaderLibrary *-- Renderer
+```

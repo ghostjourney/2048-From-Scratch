@@ -61,17 +61,60 @@ struct Vertex3D {
         color = simd_make_float4(v[0], v[1], v[2], v[3]);
     }
 };
-#elif
+#else
 struct Vertex2D {
     std::array<float, 2> pos;
     std::array<float, 4> color;
     std::array<float, 2> tex;
+    
+    inline void SetPos(float x, float y) noexcept {
+        
+    }
+
+    inline void SetPos(gfs::RVector<float, 2>& v) noexcept {
+       
+    }
+
+    inline void SetTex(float x, float y) noexcept {
+        
+    }
+
+    inline void SetTex(gfs::RVector<float, 2> v) noexcept {
+        
+    }
+
+    inline void SetColor(gfs::RVector<float, 4>& v) noexcept {
+        
+    }
+
 };
 
 struct Vertex3D {
     std::array<float, 3> pos;
     std::array<float, 4> color;
     std::array<float, 2> tex;
+
+    inline void SetPos(float x, float y) noexcept {
+        
+    }
+
+    inline void SetPos(gfs::RVector<float, 2>& v) noexcept {
+        
+    }
+
+    inline void SetTex(float x, float y) noexcept {
+       
+    }
+
+    inline void SetTex(gfs::RVector<float, 2> v) noexcept {
+        
+    }
+
+    inline void SetColor(gfs::RVector<float, 4>& v) noexcept {
+        
+    }
+
 };
+
 #endif
 };

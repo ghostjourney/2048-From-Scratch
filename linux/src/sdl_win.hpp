@@ -1,9 +1,11 @@
 #pragma once
 
 #include "gfs/window.hpp"
+#include "gfs/vertex.hpp"
 #include <SDL2/SDL.h>
 #include <cstdint>
 #include <string>
+#include <vector>
 
 class _Window : public gfs::Window {
     private:
@@ -31,7 +33,7 @@ class _Window : public gfs::Window {
             return;
         }
 
-        inline void Draw(gfs::Buffer<float, 2>& vertices) override {}
+        inline void Draw(std::vector<gfs::Vertex2D>& vertices) {}
         inline void SetHeightWidth(double height, double width)  {
             SDL_SetWindowSize(_win, width, height );
             Window::SetHeightWidth(height, width);

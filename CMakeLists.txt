@@ -22,7 +22,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
         )
 
     find_package(SDL2 REQUIRED)
-    add_compile_options(-Wall -g  )
+    add_compile_options(-Wall)
     set_property(TARGET 2048SF PROPERTY CXX_STANDARD 20)
     
     target_link_libraries(2048SF gfs game2048 GL ${SDL2_LIBRARIES} )
@@ -31,7 +31,18 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    add_executable(2048SF MACOSX_BUNDLE macos/AppDelegate.h macos/AppDelegate.mm macos/main.mm macos/MyViewController.h macos/MyViewController.mm macos/Base.lproj/MainMenu.xib macos/Renderer.mm macos/Renderer.h macos/MacWindow.h macos/MacWindow.mm)
+    add_executable(2048SF MACOSX_BUNDLE 
+        macos/AppDelegate.h 
+        macos/AppDelegate.mm 
+        macos/main.mm 
+        macos/MyViewController.h 
+        macos/MyViewController.mm 
+        macos/Base.lproj/MainMenu.xib 
+        macos/MacWindow.h 
+        macos/MacWindow.mm
+        macos/MacRenderer.h
+        macos/MacRenderer.mm
+    )
     target_compile_options(2048SF PUBLIC "-fobjc-arc")
     target_link_libraries(2048SF "-framework MetalKit" "-framework Metal" "-framework QuartzCore -framework Cocoa")
 

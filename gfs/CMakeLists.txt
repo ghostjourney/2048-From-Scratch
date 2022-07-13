@@ -6,10 +6,12 @@ add_library(gfs
     include/gfs/buffer.hpp
     include/gfs/graphics.hpp
     include/gfs/vertex.hpp
+    include/gfs/renderer.hpp
 
     src/matrix.cpp
     src/window.cpp
     src/buffer.cpp
+    src/renderer.cpp
 )
 
 set_property(TARGET gfs PROPERTY CXX_STANDARD 20)

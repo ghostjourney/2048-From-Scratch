@@ -21,7 +21,7 @@ gfs::Window* Game2048::Game2048::GetWindow(void) {
 
 void Game2048::Game2048::Init(void) {
     mWindow->SetTitle("Hello World");
-    mWindow->SetHeightWidth(1280.0, 720.0);
+    mWindow->SetHeightWidth(600.0, 800.0);
 
     mTile = std::unique_ptr<Tile>();
 }

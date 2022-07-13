@@ -1,12 +1,14 @@
 #import "MyViewController.h"
 
-#import "Renderer.h"
+#include "MacRenderer.h"
 
 @implementation MyViewController
 {
     MTKView* _view;
     
     Renderer* _renderer;
+    
+    MacRenderer* _macRenderer;
     
     Game2048::Game2048* _game;
     MacWindow* _macWindow;
@@ -17,6 +19,10 @@
     self = [super initWithNibName:nil bundle:nil];
     _game = game;
     _macWindow = macWindow;
+    
+    auto macRenderer = std::make_unique<MacRenderer>();
+    _macWindow->SetRenderer(std::move(macRenderer));
+    
     
     return self;
 }
@@ -32,8 +38,12 @@
     _view = (MTKView *) self.view;
     
     _view.device = MTLCreateSystemDefaultDevice();
+    
+    _game->GetWindow()->SetRenderer(std::make_unique<MacRenderer>());
+    auto r = dynamic_cast<MacRenderer*>(_game->GetWindow()->GetRenderer());
+    
 
-    _renderer = [[Renderer alloc] initWithMetalKitView:_view WithGame:_game WithWindow: _macWindow];
+    _renderer = [[Renderer alloc] initWithMetalKitView:_view WithGame:_game WithWindow: _macWindow WithRenderer: r];
 
     if(!_renderer)
     {

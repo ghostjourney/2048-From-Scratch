@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "gfs/renderer.hpp"
+
 #include "gfs/buffer.hpp"
 
 namespace gfs {
@@ -38,13 +40,11 @@ class Window {
      * \param height new height
      * \param width new width
      */
-    virtual void SetHeightWidth(double height, double width) { mWidth = width; mHeight = height; }
-
-    /**
-     * Drawa vertices to screen
-     * \param vertices vertices to draw
-     */
-    virtual void Draw(gfs::Buffer<float, 8>& vertices)=0;
+    virtual void SetHeightWidth(double height, double width) {
+        mWidth = width;
+        mHeight = height;
+        
+    }
 
     /**
      * Gets the cached width
@@ -70,7 +70,18 @@ class Window {
         return mTitle;
     }
 
+    void SetRenderer(std::unique_ptr<Renderer> renderer) noexcept {
+        mRenderer = std::move(renderer);
+    }
+
+    Renderer* GetRenderer(void) const noexcept {
+        return mRenderer.get();
+    }
+
     private:
+
+    /// renderer
+    std::unique_ptr<Renderer> mRenderer;
 
     /// locally cached window title
     std::string mTitle;
@@ -80,5 +91,7 @@ class Window {
 
     /// locally cached window height
     double mHeight;
+
+    
 };
 };

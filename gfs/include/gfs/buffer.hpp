@@ -13,7 +13,7 @@ class Buffer {
         mData = std::make_unique<T[]>(mCapacity);
     }
 
-    ~Buffer() {
+    virtual ~Buffer() {
 
     }
 

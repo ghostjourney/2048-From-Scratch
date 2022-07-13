@@ -2,14 +2,13 @@
 
 #include "gfs/matrix.hpp"
 
+#ifdef __cplusplus
+#include <simd/simd.h>
+#endif
+
 namespace gfs {
 
 #ifdef __APPLE__
-#undef __cplusplus
-#define _Bool bool
-#include <simd/simd.h>
-#undef _Bool
-#define __cplusplus
 struct Vertex2D {
     simd_float2 pos;
     simd_float4 color;

@@ -1,8 +1,8 @@
-#import "Renderer.h"
+#include "MacRenderer.h"
+
+#include "gfs/window.hpp"
 
 #include "game2048/game2048.hpp"
-
-#include "MacWindow.h"
 
 @implementation Renderer
 {
@@ -18,11 +18,12 @@
     Game2048::Game2048* _game;
 }
 
-- (nonnull instancetype) initWithMetalKitView:(nonnull MTKView *) mtkView WithGame:(Game2048::Game2048 *)game WithWindow:(MacWindow*) macWindow
+- (nonnull instancetype) initWithMetalKitView:(nonnull MTKView *) mtkView WithGame:(Game2048::Game2048 *)game WithWindow:(MacWindow*) macWindow WithRenderer:(MacRenderer*) macRenderer
 {
     self = [super init];
     
     _game = game;
+    macRenderer->SetRenderer(self);
     
     if(self)
     {
@@ -46,13 +47,15 @@
             "   float4 position [[position]];\n"
             "   float4 color;\n"
             "};\n"
-
             "v2f vertex v_simple(\n"
-            "    device const VertexBuffer* in     [[buffer(0)]],\n"
+            "    device const VertexBuffer* in   [[buffer(0)]],\n"
+            "    device const float4x4*     p [[buffer(1)]],\n"
+            "    device const float4x4*     v [[buffer(2)]],\n"
             "    uint                vid    [[vertex_id]])\n"
             "{\n"
             "    v2f o;\n"
-            "    o.position = float4(in[vid].position.xy, 0.0, 1.0);\n"
+            "    o.position = (*p) * (*v) * float4(in[vid].position.xy, 0.0, 1.0);\n"
+            "    o.position = float4(o.position.xy, o.position.z*-1.0f, 1.0);\n"
             "    o.color = in[vid].color.xyzw;\n"
             "    return o;\n"
             "}\n"
@@ -82,6 +85,8 @@ struct Test {
 
 - (void)drawInMTKView:(nonnull MTKView *)view;
 {
+    _game->Draw();
+    
     MTLRenderPassDescriptor *renderPassDescriptor = view.currentRenderPassDescriptor;
     if(renderPassDescriptor == nil)
     {
@@ -91,7 +96,6 @@ struct Test {
     id<MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
 
     id<MTLRenderCommandEncoder> commandEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
-
 
     id<CAMetalDrawable> drawable = view.currentDrawable;
    
@@ -116,18 +120,28 @@ struct Test {
         NSLog(@"Pipeline Error");
     }
     
+    
+    auto w = view.frame.size.width;
+    auto h = view.frame.size.height;
+    
+    
+    auto proj = gfs::ProjectionMatrix<float>(0.0f, view.frame.size.width, 0.0f, view.frame.size.height, 0.0f, 100.0f);
+    gfs::Transpose<float>(proj);
+    //auto viewMatrix = gfs::ScaleMatrix(1.0f,1.0f, -1.0f);
+    auto viewMatrix = gfs::CreateIdentity<float, 4>(1.0f);
+    gfs::Transpose<float>(viewMatrix);
     [commandEncoder setViewport:(MTLViewport){0.0, 0.0, view.frame.size.width, view.frame.size.height, 0.0, 1.0}];
     
-    auto matrix = gfs::CreateIdentity<float, 4>(1.0f);
-    
     [commandEncoder setRenderPipelineState:_renderPipelineState];
-
+    
+    
+    
     auto vertices = _game->Draw();
-
+    
     if(vertices->size() != 0) {
         [commandEncoder setVertexBytes: vertices->data() length:vertices->size()*sizeof(gfs::Vertex2D) atIndex: 0];
-
-        //[commandEncoder setVertexBytes: matrix.GetData() length: matrix.GetColumns() * matrix.GetRows() * sizeof(float) atIndex: 1];
+        [commandEncoder setVertexBytes: proj.GetData() length:16*sizeof(float) atIndex: 1];
+        [commandEncoder setVertexBytes: viewMatrix.GetData() length:16*sizeof(float) atIndex: 2];
 
         [commandEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:vertices->size()];
     }
@@ -144,4 +158,12 @@ struct Test {
 
 @end
 
+void MacRenderer::Draw(gfs::Window* win, std::vector<gfs::Vertex2D>& vertices) {
+    auto windowWidth = win->GetWidth();
+    auto windowHeight = win->GetHeight();
+    
+}
 
+void MacRenderer::SetRenderer(::Renderer* renderer) {
+    mRenderer = renderer;
+}

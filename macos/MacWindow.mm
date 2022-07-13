@@ -1,17 +1,17 @@
 #include "MacWindow.h"
 
-#include <Appkit/AppKit.h>
-#include "AppDelegate.h"
-#include "Renderer.h"
+#include <AppKit/AppKit.h>
 
-void MacWindow::SetRenderer(Renderer* renderer) {
-    mRenderer = renderer;
-}
+#include "AppDelegate.h"
 
 void MacWindow::SetHeightWidth(double height, double width) {
     Window::SetHeightWidth(height, width);
     
-    [[mAppDelegate window] setContentSize:NSMakeSize(width, height)];
+    NSRect frame = [[mAppDelegate window] frame];
+    frame.size = NSMakeSize(width, height);
+    
+    [[mAppDelegate window] setFrame: frame display: YES animate: false];
+    
 }
 
 bool MacWindow::MacWindow::Init(void) {
@@ -25,8 +25,4 @@ void MacWindow::SetAppDelegate(AppDelegate *delegate) {
 void MacWindow::SetTitle(std::string title) {
     Window::SetTitle(title);
     [mAppDelegate window].title = [[NSString alloc] initWithUTF8String:title.c_str()];
-}
-
-void MacWindow::Draw(gfs::Buffer<float, 8>& vertices) {
-    
 }

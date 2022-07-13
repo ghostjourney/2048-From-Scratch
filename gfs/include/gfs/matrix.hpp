@@ -108,7 +108,7 @@ class Matrix {
         }
 
         Matrix& operator=(const Matrix& m) {
-            std::copy(m.mMatrix.get()[0], m.mMatrix.get()[R*C], mMatrix.get()[0]);
+            std::copy(m.mMatrix.begin(), m.mMatrix.end(), mMatrix.begin());
             return *this;
         }
 
@@ -137,10 +137,10 @@ class Matrix {
 
         friend Matrix operator+(Matrix lhs, const Matrix& rhs);
 
-        template<int RC>
-        friend Matrix<T, R, RC> operator*(const Matrix<T, R, C>& lhs, const Matrix<T, C, RC>& rhs);
-
-        template<typename Type, int N> 
+        template<typename H, int A, int B, int D>
+        friend Matrix<T, A, D> operator*(const Matrix<T, A, B>& lhs, const Matrix<T, B, D>& rhs);
+    
+        template<typename Type, int N>
         friend Matrix<Type, N, N> CreateIdentity(Type identity);
 
     private:
@@ -156,13 +156,11 @@ Matrix<T, R, C> operator+(Matrix<T, R, C> lhs, const Matrix<T, R, C>& rhs) {
     return lhs;
 }
 
-template<typename T, int A, int B, int C=B>
-Matrix<T, A, B> operator*(const Matrix<T, A, B>& lhs, const Matrix<T, B, C>& rhs) {
+template<typename T, int A, int B, int C>
+Matrix<T, A, C> operator*(const Matrix<T, A, B>& lhs, const Matrix<T, B, C>& rhs) {
     Matrix<T, A, B> out;
     for(int i = 0; i < A; ++i ) {
-
         for(int j = 0; j < B; ++j) {
-
             out.mMatrix[i][j] = T();
             for(int k = 0; k < C; ++k) {
                 out += lhs.mMatrix[i][j] * rhs.mMatrix[j][k];
@@ -178,16 +176,22 @@ Matrix<T, N, N> operator*(const Matrix<T, N, N>& lhs, const Matrix<T, N, N>& rhs
 
 template<typename T, int A, int B>
 Matrix<T, A, B> operator*(const Matrix<T, A, B>& lhs, const Matrix<T, B, A>& rhs) {
-    return operator*<T, A, B>(lhs, rhs);
+    return operator*<T, A, B, B>(lhs, rhs);
 }
 
 
 template<typename Type, int N>
 inline Matrix<Type, N, N> CreateIdentity(const Type identity) {
     Matrix<Type, N, N> out;
-    for(int i = 0; i < N; ++i) {
-        out.mMatrix[i*i] = identity;
+
+    for(int i = 0; i < N*N; ++i) {
+        out[i] = Type();
     }
+    
+    for(int i = 0; i < N; ++i) {
+        out[i*N+i] = identity;
+    }
+
     return out;
 }
 
@@ -196,8 +200,8 @@ inline Matrix<float, 4, 4> CreateIdentity() {
 }
 
 template<typename T>
-inline Matrix<T, 4, 4> TransitionMatrix(const T x, const T y, const T z) {
-    Matrix<T, 4, 4> out = CreateIdentity<T, 4>();
+inline Matrix<T, 4, 4> TranslationMatrix(const T x, const T y, const T z) {
+    Matrix<T, 4, 4> out = CreateIdentity<T, 4>(1);
     out[0 * 4 + 3] = x;
     out[1 * 4 + 3] = y;
     out[2 * 4 + 3] = z;
@@ -205,8 +209,8 @@ inline Matrix<T, 4, 4> TransitionMatrix(const T x, const T y, const T z) {
 }
 
 template<typename T>
-inline Matrix<T, 4, 4> TranslationMatrix(const T x, const T y, const T z) {
-    Matrix<T, 4, 4> out = CreateIdentity<T, 4>();
+inline Matrix<T, 4, 4> ScaleMatrix(const T x, const T y, const T z) {
+    Matrix<T, 4, 4> out = CreateIdentity<T, 4>(1);
     out[0 * 4 + 0] = x;
     out[1 * 4 + 1] = y;
     out[2 * 4 + 2] = z;
@@ -245,11 +249,23 @@ requires FloatingPoint<T>
 inline Matrix<T, 4, 4> ProjectionMatrix(const T left, const T right, const T bottom, const T top, const T near, const T far) {
 
     Matrix<T, 4, 4> out = {
-        2 / (right - left), 0, 0, -(right+left) / (right - left),
-        0, 2 / (top - bottom), 0, -(top+bottom) / (top - bottom),
-        0, 0,0 -2/ (far - near), -(far + near) / (far - near),
+        2.0f / (right - left), 0, 0, -(right+left) / (right - left),
+        0, 2.0f / (top - bottom), 0, -(top+bottom) / (top - bottom),
+        0, 0, -2.0f/ (far - near), -(far + near) / (far - near),
         0, 0, 0, 1
     };
     return out;
 }
+
+template<class T>
+requires FloatingPoint<T>
+inline void Transpose(Matrix<float, 4, 4>& matrix) {
+    for(int i = 0; i < 4; ++i) {
+        for(int j = 0; j < i; ++j) {
+            
+            std::swap(matrix[i*4+j], matrix[j*4+i]);
+        }
+    }
+}
+
 }

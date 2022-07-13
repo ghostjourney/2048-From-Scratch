@@ -59,7 +59,7 @@ namespace Game2048 {
         /**
          * draw game frame
          */
-        std::unique_ptr<std::vector<gfs::Vertex2D>> Draw(void);
+        void Draw(void);
 
         /**
          * Get program wide logger

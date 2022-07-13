@@ -27,7 +27,7 @@ void Game2048::Game2048::Init(void) {
 }
 
 
-std::unique_ptr<std::vector<gfs::Vertex2D>> Game2048::Game2048::Draw(void) {
+void Game2048::Game2048::Draw(void) {
     auto buffer = std::make_unique<std::vector<gfs::Vertex2D>>();
     mTile->Draw(*buffer.get());
     std::array<float, 4> clearColor;

@@ -17,10 +17,25 @@ class MacRenderer;
 
 class MacRenderer : public gfs::Renderer {
     public:
+    
         void Draw(gfs::Window* win, std::vector<gfs::Vertex2D>& vertices) override;
     
         void SetRenderer(::Renderer* renderer);
     
+        void SetMTKView(MTKView* view) { mView = view; }
+    
+        void Init(MTKView* view);
     private:
         ::Renderer *mRenderer;
+    
+        MTKView* mView;
+    
+        id<MTLDevice> mDevice;
+        id<MTLCommandQueue> mCommandQueue;
+        id<MTLLibrary> mLibrary;
+    
+        id<MTLRenderPipelineState> mRenderPipelineState;
+    
+        id<MTLFunction> mVS;
+        id<MTLFunction> mFS;
 };

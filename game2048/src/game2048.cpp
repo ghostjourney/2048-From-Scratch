@@ -30,6 +30,18 @@ void Game2048::Game2048::Init(void) {
 std::unique_ptr<std::vector<gfs::Vertex2D>> Game2048::Game2048::Draw(void) {
     auto buffer = std::make_unique<std::vector<gfs::Vertex2D>>();
     mTile->Draw(*buffer.get());
+    std::array<float, 4> clearColor;
+    clearColor[0] = 1.0f;
+    clearColor[1] = 0.0f;
+    clearColor[2] = 0.0f;
+    clearColor[3] = 1.0f;
+    mWindow->GetRenderer()->SetClearColor(clearColor);
+    auto proj = gfs::ProjectionMatrix<float>(0.0f, mWindow->GetWidth(), 0.0f, mWindow->GetHeight(), 0.0f, 100.0f);
+    mWindow->GetRenderer()->SetProjection(proj);
+    auto view = gfs::CreateIdentity<float, 4>(1.0f);
+    mWindow->GetRenderer()->SetView(view);
+    mWindow->GetRenderer()->Draw(mWindow.get(), *buffer);
+    
     return std::move(buffer);
 }
 

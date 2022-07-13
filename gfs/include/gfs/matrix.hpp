@@ -267,5 +267,4 @@ inline void Transpose(Matrix<float, 4, 4>& matrix) {
         }
     }
 }
-
 }

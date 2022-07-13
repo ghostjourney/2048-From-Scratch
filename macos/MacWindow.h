@@ -1,9 +1,7 @@
 #pragma once
 
 #include "gfs/window.hpp"
-
 @class Renderer;
-
 @class AppDelegate;
 
 class MacWindow : public gfs::Window {

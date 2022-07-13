@@ -59,7 +59,7 @@ class Window {
      * \returns cahched height
      */
     inline virtual double GetHeight(void) const noexcept {
-        return mWidth;
+        return mHeight;
     }
 
     /**
@@ -70,10 +70,19 @@ class Window {
         return mTitle;
     }
 
+    /**
+     * Sets the platform specific renderer for this window
+     * \param renderer platform specific renderer
+     */
     void SetRenderer(std::unique_ptr<Renderer> renderer) noexcept {
         mRenderer = std::move(renderer);
     }
-
+    
+    
+    /**
+     * Gets the platform specific renderer for this window
+     * \returns the platform specific renderer.
+     */
     Renderer* GetRenderer(void) const noexcept {
         return mRenderer.get();
     }
@@ -91,7 +100,5 @@ class Window {
 
     /// locally cached window height
     double mHeight;
-
-    
 };
 };

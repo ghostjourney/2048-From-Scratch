@@ -17,6 +17,7 @@
     _game = game;
     macRenderer->SetRenderer(self);
     _macRenderer = macRenderer;
+    _macRenderer->SetViewPortPolicy(std::make_unique<gfs::DefaultViewPortPolicy>(_game->GetWindow()));
     
     if(self)
     {
@@ -73,12 +74,10 @@ void MacRenderer::Draw(gfs::Window* win, std::vector<gfs::Vertex2D>& vertices) {
     if(pipelineError != nil) {
         NSLog(@"Pipeline Error");
     }
-    gfs::ViewPort* vp = GetViewPortParameters();
-    if(vp == nullptr) {
-        [commandEncoder setViewport:(MTLViewport){0.0, 0.0, mView.frame.size.width, mView.frame.size.height, 0.0, 1.0}];
-    } else {
-         [commandEncoder setViewport:(MTLViewport){vp->left, vp->bottom, vp->right, vp->top, vp->near, vp->far}];
-    }
+    
+    
+    gfs::ViewPortPolicy* vp = GetViewPortPolicy();
+    [commandEncoder setViewport:(MTLViewport){vp->GetBottom(), vp->GetLeft(), vp->GetRight(), vp->GetTop()}];
     
     [commandEncoder setRenderPipelineState:mRenderPipelineState];
     

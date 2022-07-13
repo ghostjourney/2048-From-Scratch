@@ -6,25 +6,34 @@
 
 namespace gfs {
 
-struct ViewPort {
-    float left;
-    float right;
-    float top;
-    float bottom;
-    float near;
-    float far;
-    
-    ViewPort(float left, float right, float top, float bottom, float near, float far) {
-        this->left = left;
-        this->right = right;
-        this->top = top;
-        this->bottom = bottom;
-        this->near = near;
-        this->far = far;
-    }
+class ViewPortPolicy {
+    public:
+        virtual float GetBottom(void)=0;
+        virtual float GetTop(void)=0;
+        virtual float GetLeft(void)=0;
+        virtual float GetRight(void)=0;
+        virtual float GetNear(void)=0;
+        virtual float GetFar(void)=0;
 };
 
 class Window;
+
+class DefaultViewPortPolicy : public ViewPortPolicy {
+    public:
+        DefaultViewPortPolicy(Window* window) : mWindow{window} {}
+    
+        float GetBottom(void) override { return 0.0f; }
+        float GetTop(void) override;
+        float GetLeft(void) override { return 0.0f; }
+        float GetRight(void) override;
+        float GetNear(void) override { return 0.0f; }
+        float GetFar(void) override { return 100.0f; }
+    
+    private:
+        /// non owned pointer
+        Window* mWindow;
+};
+
 class Renderer {
     public:
         Renderer() {
@@ -39,9 +48,7 @@ class Renderer {
         Renderer&& operator=(const Renderer&)=delete;
         Renderer&& operator=(const Renderer&&)=delete;
     
-        void SetView(const gfs::Matrix<float, 4, 4>& view) noexcept {
-            mView = view;
-        }
+        void SetView(const gfs::Matrix<float, 4, 4>& view) noexcept;
     
         gfs::Matrix<float, 4, 4>& GetView(void) noexcept {
             return mView;
@@ -55,12 +62,12 @@ class Renderer {
 
         virtual void Draw(gfs::Window* win, std::vector<Vertex2D>& vertices)=0;
     
-        void setViewPortParameters(std::unique_ptr<ViewPort> vp) {
-            mViewPortParameters = std::move(vp);
+        void SetViewPortPolicy(std::unique_ptr<ViewPortPolicy> vp) {
+            mViewPortPolicy = std::move(vp);
         }
     
-        ViewPort* GetViewPortParameters(void) {
-            return mViewPortParameters.get();
+        ViewPortPolicy* GetViewPortPolicy(void) {
+            return mViewPortPolicy.get();
         }
     
         void SetClearColor(float r, float g, float b, float a) {
@@ -78,13 +85,16 @@ class Renderer {
             return mClearColor;
         }
     private:
-        /// the projection matrix to use
+        /// matrix projection being used
         gfs::Matrix<float, 4, 4> mProjection;
-    
+   
+        /// matrix view being used
         gfs::Matrix<float, 4, 4> mView;
+   
+        /// parameters being used for setting the view port
+        std::unique_ptr<ViewPortPolicy> mViewPortPolicy;
     
-        std::unique_ptr<ViewPort> mViewPortParameters;
+        /// clear color
         std::array<float, 4> mClearColor;
-    
 };
 };

@@ -23,6 +23,8 @@
             conflicting declaration ‘typedef void (* PFNGLFRAGMENTLIGHTFVSGIXPROC)(GLenum, GLenum, const GLfloat*)’
 */
 
+
+
 const int SCREEN_WIDTH  = 800;
 const int SCREEN_HEIGHT = 600;
 
@@ -36,14 +38,16 @@ int main(int argc, char* argv[]){
 
     SDL_Surface *win_surface = SDL_GetWindowSurface(win.getWinPtr());
     SDL_FillRect(&*win_surface, nullptr, SDL_MapRGB(win_surface->format, 0xFF, 0xFF, 0xFF));
+    SDL_GLContext glctx;
+    init(win.getWinPtr(), &glctx);
     SDL_UpdateWindowSurface(win.getWinPtr());
     //SDL_Delay(3000);
-    
+    /*
     if (!isGLCtx(win.getWinPtr())) {
         return EXIT_FAILURE;
     } 
-
-
+    */
+    
     bool quit = false;
     SDL_Event e;
 

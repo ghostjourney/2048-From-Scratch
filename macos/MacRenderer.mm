@@ -1,8 +1,8 @@
 #include "MacRenderer.h"
-
 #include "gfs/window.hpp"
-
 #include "game2048/game2048.hpp"
+#include "MacShaderLibraryBuilder.h"
+#include "MacShaderLibrary.h"
 
 @implementation Renderer
 {
@@ -25,13 +25,6 @@
     }
     return self;
 }
-
-#include <simd/simd.h>
-
-struct Test {
-    simd_float2 pos;
-    simd_float4 color;
-};
 
 - (void)drawInMTKView:(nonnull MTKView *)view;
 {
@@ -66,15 +59,14 @@ void MacRenderer::Draw(gfs::Window* win, std::vector<gfs::Vertex2D>& vertices) {
    
     MTLRenderPipelineDescriptor* pipelineDescriptor= [MTLRenderPipelineDescriptor new];
     pipelineDescriptor.label = @"Simple Pipeline";
-    pipelineDescriptor.vertexFunction = mVS;
-    pipelineDescriptor.fragmentFunction = mFS;
+    pipelineDescriptor.vertexFunction = mVS->GetShader();
+    pipelineDescriptor.fragmentFunction = mFS->GetShader();
     pipelineDescriptor.colorAttachments[0].pixelFormat = mView.colorPixelFormat;
     mRenderPipelineState = [mDevice newRenderPipelineStateWithDescriptor: pipelineDescriptor error:&pipelineError];
     
     if(pipelineError != nil) {
         NSLog(@"Pipeline Error");
     }
-    
     
     gfs::ViewPortPolicy* vp = GetViewPortPolicy();
     [commandEncoder setViewport:(MTLViewport){vp->GetBottom(), vp->GetLeft(), vp->GetRight(), vp->GetTop()}];
@@ -103,47 +95,41 @@ void MacRenderer::Init(MTKView* view) {
     mDevice = view.device;
     mCommandQueue = [mDevice newCommandQueue];
     
-   MTLCompileOptions* compileOptions = [MTLCompileOptions new];
-    compileOptions.languageVersion = MTLLanguageVersion2_4;
-
-    NSError* compileError;
-
-    mLibrary = [mDevice newLibraryWithSource:
-        @"#include <metal_stdlib>\n"
-        "using namespace metal;\n"
-        "struct VertexBuffer {\n"
-        "   float2 position;\n"
-        "   float4 color;\n"
-        "   float2 tex;\n"
-        "};\n"
-        "struct v2f {\n"
-        "   float4 position [[position]];\n"
-        "   float4 color;\n"
-        "};\n"
-        "v2f vertex v_simple(\n"
-        "    device const VertexBuffer* in   [[buffer(0)]],\n"
-        "    device const float4x4*     p [[buffer(1)]],\n"
-        "    device const float4x4*     v [[buffer(2)]],\n"
-        "    uint                vid    [[vertex_id]])\n"
-        "{\n"
-        "    v2f o;\n"
-        "    o.position = (*p) * (*v) * float4(in[vid].position.xy, 0.0, 1.0);\n"
-        "    o.position = float4(o.position.xy, o.position.z*-1.0f, 1.0);\n"
-        "    o.color = in[vid].color.xyzw;\n"
-        "    return o;\n"
-        "}\n"
-        "fragment float4 f_simple(\n"
-        "   v2f in [[stage_in]])\n"
-        "{\n"
-        "    return in.color.xyzw;\n"
-        "}\n"
-        options:compileOptions error:&compileError];
-
-    if(!mLibrary) {
-        NSLog(@"Error Creating MTLLibrary");
-    }
-
-    mVS = [mLibrary newFunctionWithName:@"v_simple"];
-    mFS= [mLibrary newFunctionWithName:@"f_simple"];
+    MacShaderLibraryBuilder libraryBuilder;
     
+    std::string librarySrc =
+    "#include <metal_stdlib>\n"
+    "using namespace metal;\n"
+    "struct VertexBuffer {\n"
+    "   float2 position;\n"
+    "   float4 color;\n"
+    "   float2 tex;\n"
+    "};\n"
+    "struct v2f {\n"
+    "   float4 position [[position]];\n"
+    "   float4 color;\n"
+    "};\n"
+    "v2f vertex v_simple(\n"
+    "    device const VertexBuffer* in   [[buffer(0)]],\n"
+    "    device const float4x4*     p [[buffer(1)]],\n"
+    "    device const float4x4*     v [[buffer(2)]],\n"
+    "    uint                vid    [[vertex_id]])\n"
+    "{\n"
+    "    v2f o;\n"
+    "    o.position = (*p) * (*v) * float4(in[vid].position.xy, 0.0, 1.0);\n"
+    "    o.position = float4(o.position.xy, o.position.z*-1.0f, 1.0);\n"
+    "    o.color = in[vid].color.xyzw;\n"
+    "    return o;\n"
+    "}\n"
+    "fragment float4 f_simple(\n"
+    "   v2f in [[stage_in]])\n"
+    "{\n"
+    "    return in.color.xyzw;\n"
+    "}\n";
+    
+    libraryBuilder.AddShaderBlock(librarySrc);
+    libraryBuilder.SetMTLDevice(mDevice);
+    mLibrary = std::move(libraryBuilder.BuildMacShaderLibrary());
+    mVS = mLibrary->GetMacShader("v_simple");
+    mFS = mLibrary->GetMacShader("f_simple");
 }

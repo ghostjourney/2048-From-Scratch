@@ -42,6 +42,12 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         macos/MacWindow.mm
         macos/MacRenderer.h
         macos/MacRenderer.mm
+        macos/MacShaderLibraryBuilder.h
+        macos/MacShaderLibraryBuilder.mm
+        macos/MacShaderLibrary.h
+        macos/MacShaderLibrary.mm
+        macos/MacShader.h
+        macos/MacShader.mm
     )
     target_compile_options(2048SF PUBLIC "-fobjc-arc")
     target_link_libraries(2048SF "-framework MetalKit" "-framework Metal" "-framework QuartzCore -framework Cocoa")

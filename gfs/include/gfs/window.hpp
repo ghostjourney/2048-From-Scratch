@@ -22,6 +22,8 @@ class Window {
 
     /** window should never be copied */
     Window& operator=(const Window&)=delete;
+    
+    virtual ~Window() {}
 
     /**
      * First call after the constructor. Initializes the Window. 

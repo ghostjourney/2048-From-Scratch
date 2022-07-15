@@ -6,6 +6,7 @@ namespace gfs {
 
 class ConsoleLogger : public Logger {
     public:
+    virtual ~ConsoleLogger() {}
     void Log(Logger::Level level, std::string message) override {
         std::cout << Logger::LevelToString(level) << ": " << message << std::endl;
     }

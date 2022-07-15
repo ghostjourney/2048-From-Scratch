@@ -7,6 +7,9 @@ add_library(gfs
     include/gfs/graphics.hpp
     include/gfs/vertex.hpp
     include/gfs/renderer.hpp
+    include/gfs/shader.hpp
+    include/gfs/shader_library.hpp
+    include/gfs/shader_library_builder.hpp
 
     src/matrix.cpp
     src/window.cpp

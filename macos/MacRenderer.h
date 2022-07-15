@@ -4,6 +4,10 @@
 
 #include "gfs/renderer.hpp"
 
+#include "MacShaderLibrary.h"
+
+class MacShader;
+
 namespace Game2048 {
 class Game2048;
 };
@@ -25,6 +29,9 @@ class MacRenderer : public gfs::Renderer {
         void SetMTKView(MTKView* view) { mView = view; }
     
         void Init(MTKView* view);
+
+        void SetDefaultShaderLibrary(void) noexcept override;
+    
     private:
         ::Renderer *mRenderer;
     
@@ -32,10 +39,6 @@ class MacRenderer : public gfs::Renderer {
     
         id<MTLDevice> mDevice;
         id<MTLCommandQueue> mCommandQueue;
-        id<MTLLibrary> mLibrary;
     
         id<MTLRenderPipelineState> mRenderPipelineState;
-    
-        id<MTLFunction> mVS;
-        id<MTLFunction> mFS;
 };

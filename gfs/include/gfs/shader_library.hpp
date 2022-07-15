@@ -25,6 +25,5 @@ class ShaderLibrary {
     virtual Shader* GetShader(std::string name)=0;
 
     private:
-
 };
 }

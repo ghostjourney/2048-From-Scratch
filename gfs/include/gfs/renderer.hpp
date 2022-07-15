@@ -10,6 +10,7 @@ namespace gfs {
 
 class ViewPortPolicy {
     public:
+        virtual ~ViewPortPolicy() {}
         virtual float GetBottom(void)=0;
         virtual float GetTop(void)=0;
         virtual float GetLeft(void)=0;
@@ -24,6 +25,7 @@ class ShaderLibrary;
 class DefaultViewPortPolicy : public ViewPortPolicy {
     public:
         DefaultViewPortPolicy(Window* window) : mWindow{window} {}
+        virtual ~DefaultViewPortPolicy() {}
     
         float GetBottom(void) override { return 0.0f; }
         float GetTop(void) override;

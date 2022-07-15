@@ -16,29 +16,29 @@ class MacWindow;
 class MacRenderer;
 
 @interface Renderer : NSObject<MTKViewDelegate>
-- (nonnull instancetype)initWithMetalKitView:(nonnull MTKView *)mtkView WithGame:(Game2048::Game2048*) game WithWindow:(MacWindow *) macWindow WithRenderer:(MacRenderer*) macRenderer;
+- (nonnull instancetype)initWithMetalKitView:(nonnull MTKView *)mtkView WithGame:(Game2048::Game2048* _Nullable) game WithWindow:(MacWindow * _Nullable) macWindow WithRenderer:(MacRenderer* _Nullable) macRenderer;
 @end
 
 class MacRenderer : public gfs::Renderer {
     public:
     
-        void Draw(gfs::Window* win, std::vector<gfs::Vertex2D>& vertices) override;
+        void Draw(gfs::Window* _Nullable win, std::vector<gfs::Vertex2D>& vertices) override;
     
-        void SetRenderer(::Renderer* renderer);
+        void SetRenderer(::Renderer* _Nullable renderer);
     
-        void SetMTKView(MTKView* view) { mView = view; }
+        void SetMTKView(MTKView* _Nullable view) { mView = view; }
     
-        void Init(MTKView* view);
+        void Init(MTKView* _Nullable view);
 
         void SetDefaultShaderLibrary(void) noexcept override;
     
     private:
-        ::Renderer *mRenderer;
+        ::Renderer* _Nullable mRenderer;
     
-        MTKView* mView;
+        MTKView* _Nullable mView;
     
-        id<MTLDevice> mDevice;
-        id<MTLCommandQueue> mCommandQueue;
+        id<MTLDevice> _Nullable mDevice;
+        id<MTLCommandQueue> _Nullable mCommandQueue;
     
-        id<MTLRenderPipelineState> mRenderPipelineState;
+        id<MTLRenderPipelineState> _Nullable mRenderPipelineState;
 };

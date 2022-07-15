@@ -16,13 +16,14 @@ class Shader;
 class ShaderLibrary {
 
     public:
+        virtual ~ShaderLibrary() {}
 
-    /**
-     * retrieves a shader object
-     * 
-     * \param name name of shader
-     */
-    virtual Shader* GetShader(std::string name)=0;
+        /**
+         * retrieves a shader object
+         *
+         * \param name name of shader
+         */
+        virtual Shader* GetShader(std::string name)=0;
 
     private:
 };

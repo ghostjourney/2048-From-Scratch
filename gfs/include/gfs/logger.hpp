@@ -10,6 +10,7 @@ namespace gfs {
  */
 class Logger {
     public:
+        virtual ~Logger() {}
     
     /**
      * Logging level for a given message

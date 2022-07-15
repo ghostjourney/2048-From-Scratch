@@ -9,5 +9,5 @@
 
 
 @interface MyViewController : NSViewController
-- (instancetype) initWithGame: (Game2048::Game2048*_Nullable) game WithWindow: (MacWindow *) macWindow;
+- (instancetype _Nullable) initWithGame: (Game2048::Game2048*_Nullable) game WithWindow: (MacWindow * _Nullable) macWindow;
 @end

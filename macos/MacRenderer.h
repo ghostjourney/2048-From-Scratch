@@ -30,6 +30,8 @@ class MacRenderer : public gfs::Renderer {
     
         void Init(MTKView* view);
 
+        void SetDefaultShaderLibrary(void) noexcept override;
+    
     private:
         ::Renderer *mRenderer;
     
@@ -38,10 +40,5 @@ class MacRenderer : public gfs::Renderer {
         id<MTLDevice> mDevice;
         id<MTLCommandQueue> mCommandQueue;
     
-        std::unique_ptr<MacShaderLibrary> mLibrary;
-    
         id<MTLRenderPipelineState> mRenderPipelineState;
-    
-        MacShader* mVS;
-        MacShader* mFS;
 };

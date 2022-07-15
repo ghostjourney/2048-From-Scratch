@@ -4,6 +4,8 @@
 
 #include "gfs/vertex.hpp"
 
+#include "gfs/pipeline.hpp"
+
 namespace gfs {
 
 class ViewPortPolicy {
@@ -17,6 +19,7 @@ class ViewPortPolicy {
 };
 
 class Window;
+class ShaderLibrary;
 
 class DefaultViewPortPolicy : public ViewPortPolicy {
     public:
@@ -36,13 +39,8 @@ class DefaultViewPortPolicy : public ViewPortPolicy {
 
 class Renderer {
     public:
-        Renderer() {
-            mClearColor[0] = 1.0f;
-            mClearColor[1] = 1.0f;
-            mClearColor[2] = 1.0f;
-            mClearColor[3] = 1.0f;
-        }
-        virtual ~Renderer() {}
+        Renderer(void);
+        virtual ~Renderer(void);
         Renderer(const Renderer&)=delete;
         Renderer(const Renderer&&)=delete;
         Renderer&& operator=(const Renderer&)=delete;
@@ -84,6 +82,19 @@ class Renderer {
         std::array<float, 4>& GetClearColor(void) noexcept {
             return mClearColor;
         }
+
+        virtual std::unique_ptr<Pipeline> CreatePipeline(void) noexcept;
+
+        virtual void SetDefaultShaderLibrary(void) noexcept { }
+
+        virtual void SetShaderLibrary(std::unique_ptr<ShaderLibrary> library);
+
+        virtual ShaderLibrary* GetShaderLibrary(void);
+    
+        virtual void SetPipeline(std::unique_ptr<gfs::Pipeline> pipeline);
+    
+        virtual Pipeline* GetPipeline(void);
+
     private:
         /// matrix projection being used
         gfs::Matrix<float, 4, 4> mProjection;
@@ -96,5 +107,9 @@ class Renderer {
     
         /// clear color
         std::array<float, 4> mClearColor;
+    
+        std::unique_ptr<ShaderLibrary> mShaderLibrary;
+    
+        std::unique_ptr<Pipeline> mPipeline;
 };
 };

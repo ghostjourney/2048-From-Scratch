@@ -6,6 +6,8 @@
 
 #include "gfs/console_logger.hpp"
 
+#include "gfs/shader_library.hpp"
+
 Game2048::Game2048::Game2048() : mLogger{std::make_unique<gfs::ConsoleLogger>()}{
 };
 
@@ -22,7 +24,12 @@ gfs::Window* Game2048::Game2048::GetWindow(void) {
 void Game2048::Game2048::Init(void) {
     mWindow->SetTitle("Hello World");
     mWindow->SetHeightWidth(600.0, 800.0);
-
+    mWindow->GetRenderer()->SetDefaultShaderLibrary();
+    auto library = mWindow->GetRenderer()->GetShaderLibrary();
+    auto pipeline = mWindow->GetRenderer()->CreatePipeline();
+    pipeline->SetVertexShader(library->GetShader("v_simple"));
+    pipeline->SetFragmentShader(library->GetShader("f_simple"));
+    mWindow->GetRenderer()->SetPipeline(std::move(pipeline));
     mTile = std::unique_ptr<Tile>();
 }
 

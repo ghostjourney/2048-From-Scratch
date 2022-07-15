@@ -2,10 +2,8 @@
 
 #include "gfs/shader_library_builder.hpp"
 #include "MacShaderLibrary.h"
-
 #include <vector>
 #include <utility>
-
 #include "MetalKit/MetalKit.h"
 
 class MacShaderLibraryBuilder : public gfs::ShaderLibraryBuilder {
@@ -14,7 +12,6 @@ class MacShaderLibraryBuilder : public gfs::ShaderLibraryBuilder {
 
         std::unique_ptr<gfs::ShaderLibrary> BuildLibrary(void) override;
         std::unique_ptr<MacShaderLibrary> BuildMacShaderLibrary(void);
-
 
         void AddShaderBlock(std::string& shader_src) override;
 

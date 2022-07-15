@@ -59,8 +59,8 @@ void MacRenderer::Draw(gfs::Window* win, std::vector<gfs::Vertex2D>& vertices) {
    
     MTLRenderPipelineDescriptor* pipelineDescriptor= [MTLRenderPipelineDescriptor new];
     pipelineDescriptor.label = @"Simple Pipeline";
-    pipelineDescriptor.vertexFunction = mVS->GetShader();
-    pipelineDescriptor.fragmentFunction = mFS->GetShader();
+    pipelineDescriptor.vertexFunction = dynamic_cast<MacShader*>(GetPipeline()->GetVertexShader())->GetShader();
+    pipelineDescriptor.fragmentFunction = dynamic_cast<MacShader*>(GetPipeline()->GetFragmentShader())->GetShader();
     pipelineDescriptor.colorAttachments[0].pixelFormat = mView.colorPixelFormat;
     mRenderPipelineState = [mDevice newRenderPipelineStateWithDescriptor: pipelineDescriptor error:&pipelineError];
     
@@ -94,6 +94,9 @@ void MacRenderer::SetRenderer(::Renderer* renderer) {
 void MacRenderer::Init(MTKView* view) {
     mDevice = view.device;
     mCommandQueue = [mDevice newCommandQueue];
+}
+
+void MacRenderer::SetDefaultShaderLibrary(void) noexcept {
     
     MacShaderLibraryBuilder libraryBuilder;
     
@@ -129,7 +132,7 @@ void MacRenderer::Init(MTKView* view) {
     
     libraryBuilder.AddShaderBlock(librarySrc);
     libraryBuilder.SetMTLDevice(mDevice);
-    mLibrary = std::move(libraryBuilder.BuildMacShaderLibrary());
-    mVS = mLibrary->GetMacShader("v_simple");
-    mFS = mLibrary->GetMacShader("f_simple");
+    auto library = libraryBuilder.BuildLibrary();
+    SetShaderLibrary(std::move(library));
 }
+

@@ -15,5 +15,3 @@ MacShader* MacShaderLibrary::GetMacShader(std::string name) {
     }
     return shader->second.get();
 }
-
-
